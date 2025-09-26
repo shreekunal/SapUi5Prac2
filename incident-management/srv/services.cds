@@ -10,6 +10,7 @@ service ProcessorService {
 }
 
 annotate ProcessorService.Incidents with @odata.draft.enabled; 
+annotate ProcessorService.Incidents with @odata.draft.bypass; 
 
 annotate ProcessorService.Status with @(Capabilities.Updatable: true);
 // Service used by administrators to manage customers and incidents.

@@ -12,13 +12,13 @@ sap.ui.define([
             }
 
             try {
-                // In V4, associations are updated via @odata.id reference string
-                await oContext.setProperty("status", { "@odata.id": `/ProcessorService.Status('C')` });
+                // Update the status code directly
+                await oContext.setProperty("status_code", 'R');
 
                 // Refresh context to update UI
                 oContext.refresh();
 
-                MessageToast.show("Incident marked as Closed.");
+                MessageToast.show("Incident marked as completed.");
             } catch (err) {
                 MessageToast.show("Error updating incident: " + err.message);
                 console.error(err);
