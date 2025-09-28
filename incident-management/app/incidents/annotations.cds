@@ -103,9 +103,7 @@ annotate service.Incidents with @(
         status_code,
         urgency_code,
     ],
-    // Hide the delete action in the UI
-    UI.DeleteHidden              : true,
-);
+    );
 
 // Value list configuration for the customer field
 // Enables a dropdown with customer data for selection

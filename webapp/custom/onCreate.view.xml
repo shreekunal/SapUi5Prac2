@@ -1,0 +1,545 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:m="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    controllerName="com.pas.pasawardsf.custom.onCreate"
+    class="sapUiSizeCompact"
+    xmlns:form="sap.ui.comp.smartform"
+    height="100%"
+>
+    <m:Page
+        id="Page"
+        showNavButton="true"
+        navButtonPress="onPressCancel"
+    >
+        <!-- <m:Button id="back" type="Back" press="onCancel" /> -->
+        <ObjectPageLayout
+            id="ObjectPageLayout"
+            upperCaseAnchorBar="false"
+            showFooter="true"
+            class="sapUxAPObjectPageSubSectionAlignContent"
+   
+           
+        >
+            <headerTitle>
+                <ObjectPageHeader
+                    id="AwardsCreatePage"
+                    objectTitle="New:Awards"
+                />
+            </headerTitle>
+            <sections>
+                <ObjectPageSection
+                    id="_IDGenObjectPageSection2"
+                    titleUppercase="false"
+                    title="Awards"
+                    class="sapUxAPObjectPageSubSectionAlignContent"
+            
+                    
+                >
+                    <subSections>
+                        <ObjectPageSubSection
+                            id="_IDGenObjectPageSubSection2"
+                            titleUppercase="false"
+                             
+                         
+                            
+                        >
+                          <layout:VerticalLayout >
+                        
+                              
+                                <f:Form
+                                    id="FormDisplayColumn_Awards"
+                                    editable="true"
+                                    binding="{oMAModel>/}"
+                                    class="sapUiSizeCompact"
+                                >
+                                    <!-- <f:title>
+                                        <core:Title
+                                            id="_IDGenTitle2"
+                                            text="Awards"
+                                        />
+                                    </f:title> -->
+                                    <f:layout>
+                                        <f:ColumnLayout
+                                            id="_IDGenColumnLayout2"
+                                            columnsM="2"
+                                            columnsL="3"
+                                            columnsXL="4"
+                                        />
+                                    </f:layout>
+                                    <f:formContainers>
+                                        <f:FormContainer
+                                            id="_IDGenFormContainer2"
+                                        >
+                                            <f:formElements>
+                                                <f:FormElement
+                                                    id="_IDGenFormElement5"
+                                                    label="Award Type"
+                                                >
+                                                    <f:fields>
+                                                        <!-- <smartField:SmartField editable="true" id="idawardType" width="60%" value="{oMAModel>code_code}" contextEditable="true" /> -->
+                                                        <!-- <m:Input required="true" value="{oMAModel>code_code}" id="awardType" liveChange="onLiveChangeAwards" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onValueHelpRequest"/> -->
+                                                        <m:Select
+                                                            id="awardType"
+                                                            forceSelection="false"
+                                                            showSecondaryValues="true"
+                                                            selectedKey="{oMAModel>code_code}"
+                                                            items="{
+                                                                
+                                                                path: '/AwardsType',
+                                                                sorter: { path: 'code' },
+                                                                filters: [{ path: 'tableName' , operator: 'EQ', value1: 'Annual Awards'}]
+                                                            }"
+                                                            change="onLiveChangeAwards"
+                                                            liveChange="onLiveChangeAwards"
+                                                            enabled="true"
+                                                        >
+                                                            <core:ListItem
+                                                                id="_IDGenListItem1"
+                                                                key="{code}"
+                                                                text="{description}"
+                                                                additionalText="{code}"
+                                                            />
+                                                        </m:Select>
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                <f:FormElement
+                                                    id="_IDGenFormElement6"
+                                                    label="FMNO"
+                                                >
+                                                    <f:fields>
+                                                        <m:Input
+                                                            required="true"
+                                                            value="{oMAModel>fmno}"
+                                                            id="fmno"
+                                                            change="onChange"
+                                                        />
+                                                    </f:fields>
+                                                </f:FormElement>
+                                              
+                                                <f:FormElement
+                                                    id="_IDGenFormElement8"
+                                                    label="Evaluation Year"
+                                                >
+                                                    <f:fields>
+                                                        <m:Input
+                                                            value="{
+                                                                path: 'oMAModel>evaluationYear',
+                                                                type: 'sap.ui.model.type.Integer',
+                                                                constraints: {
+                                                                    minLength: 4, 
+                                                                    maxLength: 4
+                                                                }
+                                                            }"
+                                                            id="evaluationYear"
+                                                            change="onChangeEvalYear"
+                                                            maxLength="4"
+                                                            required="true"
+                                                        />
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                <f:FormElement
+                                                    id="_IDGenFormElement21"
+                                                    label="Calendar Year"
+                                                >
+                                                    <f:fields>
+                                                        <m:Input
+                                                            id="calendarYear"
+                                                            enabled="false"
+                                                        />
+                                                    </f:fields>
+                                                </f:FormElement>
+                                             
+                                                <!-- <f:FormElement
+                                                    id="_IDGenFormElement11"
+                                                    label="Start Date"
+                                                >
+                                                    <f:fields>
+                                                        <m:DatePicker
+                                                            id="startDate"
+                                                            required="true"
+                                                            valueFormat="yyyy-MM-dd"
+                                                            change="onChange"
+                                                            value="{
+									path: 'oMAModel>startDate',
+									type: 'sap.ui.model.type.Date',
+                                    formatOptions: {
+                                        source: {
+                                            pattern: 'yyyy-MM-dd',
+                                            strictParsing: true
+                                        },
+                                        pattern: 'yyyy-MM-dd',
+                                        strictParsing: true
+                                    }
+								}"
+                                                            placeholder=" "
+                                                        />
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                <f:FormElement
+                                                    id="_IDGenFormElement12"
+                                                    label="End Date"
+                                                >
+                                                    <f:fields>
+                                                        <m:DatePicker
+                                                            id="endDate"
+                                                            required="true"
+                                                            valueFormat="yyyy-MM-dd"
+                                                            change="onChange"
+                                                            value="{
+                                                                path: 'oMAModel>endDate',
+                                                                type: 'sap.ui.model.type.Date',
+                                                                formatOptions: {
+                                                                    source: {
+                                                                        pattern: 'yyyy-MM-dd',
+                                                                        strictParsing: true
+                                                                    },
+                                                                    pattern: 'yyyy-MM-dd',
+                                                                    strictParsing: true
+                                                                }
+                                                            }"
+                                                            placeholder=" "
+                                                        />
+                                                    </f:fields>
+                                                </f:FormElement> -->
+                                                <f:FormElement
+                                                    id="_IDGenFormElement13"
+                                                    label="Active"
+                                                >
+                                                    <f:fields>
+                                                        <m:CheckBox
+                                                            id="active"
+                                                            selected="true"
+                                                        />
+                                                        <!-- <m:Input value="{path: 'active' , type: 'sap.ui.model.odata.type.Boolean' }" id="active" /> -->
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                <f:FormElement id="_IDGenFormElement14" label="Grand Father" visible="{=${oMAModel>/code_code} === 'TB' ? true:false}">
+                                                    <f:fields>
+                                                        <m:CheckBox  id="grandFather" selected="false" />                                                        
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                  <f:FormElement id="_IDGenFormElement15" label="Transaction Code" visible="{=${oMAModel>/code_code} === 'TB' ? true:false}">
+                                                    <f:fields>                                                        
+                                                        <m:Select id="transacTypeCode" forceSelection="false"  showSecondaryValues="true" selectedKey="{oMAModel>transacTypeCode}"
+                                                            items="{ path: '/TransactionTypes', sorter: { path: 'code' } }"                                                            
+                                                            enabled="true"
+                                                        >
+                                                        <!-- change="onLiveChangeAwards"
+                                                            liveChange="onLiveChangeAwards" -->
+                                                        <!-- filters: [{ path: 'tableName' , operator: 'EQ', value1: 'Annual Awards'}] -->
+                                                            <core:ListItem id="_IDGenListItem15" key="{code}" text="{description}"  additionalText="{code}" />
+                                                        </m:Select>
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                <!-- <f:FormElement id="_IDGenFormElement14" label="Amount">
+                                                    <f:fields>
+                                                        <m:Input required="true" value="{oMAModel>amount}" id="amount" type="Number" change="onChange" />
+                                                    </f:fields>
+                                                </f:FormElement> -->
+                                                <!-- <f:FormElement id="_IDGenFormElement15" label="Description">
+                                                    <f:fields>
+                                                        <m:Input value="{oMAModel>description}" id="description" />
+                                                    </f:fields>
+                                                </f:FormElement> -->
+                                                <f:FormElement
+                                                    id="_IDGenFormElement16"
+                                                    label="Nature"
+                                                >
+                                                    <f:fields>
+                                                        <!-- <m:Input value="{oMAModel>nature}" id="nature" /> -->
+                                                        <m:Select
+                                                            id="nature"
+                                                            forceSelection="true"
+                                                            selectedKey="{oMAModel>nature}"
+                                                            items="{
+                                                                path: 'oNature>/data'
+                                                            }"
+                                                        >
+                                                            <core:ListItem
+                                                                id="_IDGenListItem2"
+                                                                key="{oNature>Nature}"
+                                                                text="{oNature>Nature}"
+                                                            />
+                                                        </m:Select>
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                <!-- <f:FormElement id="_IDGenFormElement17" label="Annualized SA">
+                                                    <f:fields>
+                                                        <m:Input value="{oMAModel>annualizedSA}" id="annualizedSA" type="Number" />
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                <f:FormElement id="_IDGenFormElement18" label="Distribution %">
+                                                    <f:fields>
+                                                        <m:Input value="{oMAModel>distributionPer}" id="distributionPer" type="Number" />
+                                                    </f:fields>
+                                                </f:FormElement>
+                                                <f:FormElement id="_IDGenFormElement19" label="Pro-Ration %">
+                                                    <f:fields>
+                                                        <m:Input value="{oMAModel>prorationper}" id="prorationper" type="Number" />
+                                                    </f:fields>
+                                                </f:FormElement> -->
+                                                <!-- <f:FormElement
+                                                    id="_IDGenFormElement20"
+                                                    label="Multiple Awards"
+                                                >
+                                                    <f:fields>
+                                                        <m:CheckBox
+                                                            id="multipleAwards"
+                                                            selected="false"
+                                                            enabled="{= ${oMAModel>code_code} === 'SA'  ? true : false }"
+                                                            select="onMultipleAwards"
+                                                        />
+                                                    </f:fields>
+                                                </f:FormElement> -->
+                                            </f:formElements>
+                                        </f:FormContainer>
+                                    </f:formContainers>
+                                </f:Form>
+                            <!-- </blocks>
+                            <blocks> -->
+                           
+                                <m:Table
+                                    id="tableId1"
+                                    width="100%"
+                                    items="{oMAModel>/dates}"
+                                    visible="true"
+                                >
+                                    <m:headerToolbar>
+                                        <m:Toolbar id="_IDGenToolbar1">
+                                            <m:ToolbarSpacer
+                                                id="_IDGenToolbarSpacer2"
+                                            />
+                                            <m:Button
+                                                id="_IDGenButton1"
+                                                icon="sap-icon://add"
+                                                type="Emphasized"
+                                                enabled="true"
+                                                press="onAddDate"
+                                            />
+                                        </m:Toolbar>
+                                    </m:headerToolbar>
+                                    <m:columns>
+                                        <m:Column
+                                            id="_IDGenColumn4"
+                                            width="75%"
+                                        >
+                                            <m:Text
+                                                id="_IDGenText4"
+                                                text="Currency"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            id="_IDGenColumn5"
+                                            width="75%"
+                                        >
+                                            <m:Text
+                                                id="_IDGenText5"
+                                                text="Country"
+                                            />
+                                        </m:Column>
+
+                                        <m:Column
+                                            id="_IDGenColumn2"
+                                            width="75%"
+                                        >
+                                            <m:Text
+                                                id="_IDGenText2"
+                                                text="Start Date"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            id="_IDGenColumn3"
+                                            width="75%"
+                                        >
+                                            <m:Text
+                                                id="_IDGenText3"
+                                                text="End Date"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            id="_IDGenColumn6"
+                                            width="75%"
+                                        >
+                                            <m:Text
+                                                id="_IDGenText6"
+                                                text="Amount"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            id="_IDGenColumn7"
+                                            width="75%"
+                                        >
+                                            <m:Text
+                                                id="_IDGenText7"
+                                                text="Description"
+                                            />
+                                        </m:Column>
+                                        <m:Column
+                                            id="_IDGenColumn8"
+                                            width="75%"
+                                        >
+                                            <m:Text
+                                                id="_IDGenText8"
+                                                text="Company Code"
+                                            />
+                                        </m:Column>
+                                        <m:Column id="_IDGenColumn9" width="75%" >
+                                            <m:Text   id="_IDGenText9"   text="Cost Center"  />
+                                        </m:Column>
+                                        <m:Column
+                                            id="_IDGenColumn1"
+                                            width="20%"
+                                        >
+                                            <m:Text
+                                                id="_IDGenText1"
+                                                text=""
+                                            />
+                                        </m:Column>
+                                    </m:columns>
+                                    <m:items>
+                                        <m:ColumnListItem
+                                            id="_IDGenColumnListItem1"
+                                            vAlign="Middle"
+                                        >
+                                            <m:cells>
+                                                <m:Input
+                                                    required="true"
+                                                    value="{oMAModel>currency_code}"
+                                                    id="currencyCode"
+                                                    change="onChange"
+                                                    showValueHelp="true"
+                                                    valueHelpOnly="true"
+                                                    valueHelpRequest="onValueHelpRequest"
+                                                />
+
+                                                <m:Input
+                                                    required="true"
+                                                    value="{oMAModel>country}"
+                                                    id="country"
+                                                    change="onChange"
+                                                    showValueHelp="true"
+                                                    valueHelpOnly="false"
+                                                    valueHelpRequest="onValueHelpRequestCountry"
+                                                />
+                                                <m:DatePicker
+                                                    id="MA_startDate"
+                                                    required="true"
+                                                    valueFormat="yyyy-MM-dd"
+                                                    editable="{oMAModel>EditableStartDate}"
+                                                    change="onChangeDate"
+                                                    value="{
+                                                    path: 'oMAModel>StartDate',
+                                                    type: 'sap.ui.model.type.Date',
+                                                    formatOptions: {
+                                                        source: {
+                                                            pattern: 'yyyy-MM-dd',
+                                                            strictParsing: true
+                                                        },
+                                                        pattern: 'yyyy-MM-dd',
+                                                        strictParsing: true
+                                                    }
+                                                }"
+                                                    placeholder=" "
+                                                />
+                                                <m:DatePicker
+                                                    id="MA_endDate"
+                                                    required="true"
+                                                    valueFormat="yyyy-MM-dd"
+                                                    editable="{oMAModel>EditableEndDate}"
+                                                    value="{
+                                                path: 'oMAModel>EndDate',
+                                                type: 'sap.ui.model.type.Date',
+                                                formatOptions: {
+                                                    source: {
+                                                        pattern: 'yyyy-MM-dd',
+                                                        strictParsing: true
+                                                    },
+                                                    pattern: 'yyyy-MM-dd',
+                                                    strictParsing: true
+                                                }
+                                            }"
+                                                    placeholder=" "
+                                                />
+
+                                                <m:Input
+                                                    required="true"
+                                                    value="{oMAModel>amount}"
+                                                    id="amount"
+                                                    type="Number"
+                                                    change="onChange"
+                                                />
+                                                <m:Input
+                                                    value="{oMAModel>description}"
+                                                    id="description"
+                                                />
+                                                <m:Input
+                                                    required="{= ${oMAModel>code_code} === 'SA'  ? false : true }"
+                                                    value="{oMAModel>companyCode}"
+                                                    id="companyCode"
+                                                    change="onChange"
+                                                    showValueHelp="true"
+                                                    valueHelpOnly="true"
+                                                    valueHelpRequest="onValueHelpRequestCC"
+                                                />
+                                                 <m:Input
+                                                    required="{= ${oMAModel>code_code} === 'TB'  ? true : false }"
+                                                    value="{oMAModel>costCenter}"
+                                                    id="costCenter"
+                                                    change="onChange"
+                                                    showValueHelp="true"
+                                                    valueHelpOnly="true"
+                                                    valueHelpRequest="onValueHelpRequestCostCenter"
+                                                />
+                                                <m:Button
+                                                    id="btnDelete"
+                                                    icon="sap-icon://delete"
+                                                    press="onDeleteDate"
+                                                />
+                                            </m:cells>
+                                        </m:ColumnListItem>
+                                    </m:items>
+                                </m:Table>
+                                
+                            <!-- </blocks> -->
+    </layout:VerticalLayout>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+            <footer>
+                <m:OverflowToolbar id="otbFooter">
+                    <m:Button
+                        id="messagePopover"
+                        icon="sap-icon://alert"
+                        text="{=${oMessages>/}.length}"
+                        visible="{=${oMessages>/}.length > 0}"
+                        type="Emphasized"
+                        press="onMessagePopoverPress"
+                    />
+
+                    <m:ToolbarSpacer id="_IDGenToolbarSpacer1" />
+                    <m:Button
+                        type="Emphasized"
+                        text="Create"
+                        press="onPressCreate"
+                        id="btnCreate"
+                    />
+
+                    <m:Button
+                        type="Default"
+                        text="Cancel"
+                        press="onPressCancel"
+                        id="btnCancel"
+                    />
+                </m:OverflowToolbar>
+            </footer>
+        </ObjectPageLayout>
+    </m:Page>
+</mvc:View>

@@ -1,0 +1,331 @@
+{
+    "_version": "1.40.0",
+    "sap.app": {
+        "id": "com.pas.pasawardsf",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap-ux/fiori-elements-writer:lrop",
+            "version": "0.3.6",
+            "toolsId": "ce459e25-7670-414e-9f6a-77833e8087cd"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/PartnerAwardsSrv/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [
+                        "annotation"
+                    ],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            },
+            "odatav2Service": {
+                "uri": "/v2/PartnerAwardsSrv/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [
+                        "annotation"
+                    ],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            },
+            "multipleAwards": {
+                "uri": "model/multipleAwardsModel.json",
+                "type": "JSON"
+            },
+            "awardsCreate": {
+                "uri": "model/awardsCreate.json",
+                "type": "JSON"
+            },
+            "nature": {
+                "uri": "model/nature.json",
+                "type": "JSON"
+            },
+            "messages": {
+                "uri": "model/message.json",
+                "type": "JSON"
+            },
+            "annotation": {
+                "type": "ODataAnnotation",
+                "uri": "annotations/annotation.xml",
+                "settings": {
+                    "localUri": "annotations/annotation.xml"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "com-pas-pasawardsf-inbound": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "Awards",
+                    "action": "manage",
+                    "title": "{{flpTitle}}",
+                    "subTitle": "{{flpSubtitle}}",
+                    "icon": ""
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.102.1",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "com.pas.pasawardsf.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "groupId": "$auto",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "oAwardsV2": {
+                "type": "sap.ui.model.odata.v2.ODataModel",
+                "dataSource": "odatav2Service",
+                "settings": {
+                    "defaultBindingMode": "OneWay"
+                }
+            },
+            "oMAModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "dataSource": "multipleAwards",
+                "settings": {
+                    "defaultBindingMode": "TwoWay"
+                }
+            },
+            "oAwards": {
+                "type": "sap.ui.model.json.JSONModel",
+                "dataSource": "awardsCreate",
+                "settings": {
+                    "defaultBindingMode": "TwoWay"
+                }
+            },
+            "oMessages": {
+                "type": "sap.ui.model.json.JSONModel",
+                "dataSource": "messages",
+                "settings": {
+                    "defaultBindingMode": "TwoWay"
+                }
+            },
+            "oNature": {
+                "type": "sap.ui.model.json.JSONModel",
+                "dataSource": "nature",
+                "settings": {
+                    "defaultBindingMode": "OneWay"
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": [],
+            "js": [
+                {
+                    "uri": "libs/xlsx.full.min.js"
+                }
+            ]
+        },
+        "routing": {
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "AwardsList",
+                    "target": "AwardsList"
+                },
+                {
+                    "pattern": "Awards({key}):?query:",
+                    "name": "AwardsObjectPage",
+                    "target": "AwardsObjectPage"
+                },
+                {
+                    "pattern": "AwardsCreatePage",
+                    "name": "AwardsCreatePage",
+                    "target": "AwardsCreatePage"
+                }
+            ],
+            "targets": {
+                "AwardsList": {
+                    "type": "Component",
+                    "id": "AwardsList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "entitySet": "Awards",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "Awards": {
+                                    "detail": {
+                                        "route": "AwardsObjectPage"
+                                    }
+                                }
+                            },
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "actions": {
+                                        "Upload": {
+                                            "id": "UploadButton",
+                                            "text": "Upload",
+                                            "press": "com.pas.pasawardsf.custom.ListReportExtController.Upload",
+                                            "requiresSelection": false
+                                        },
+                                        "CreateAward": {
+                                            "id": "CreateAwardButton",
+                                            "text": "Create",
+                                            "press": "com.pas.pasawardsf.custom.ListReportExtController.onCreate",
+                                            "requiresSelection": false
+                                        }
+                                    },
+                                    "tableSettings": {
+                                        "type": "GridTable"
+                                    },
+                                    "columns": {
+                                        "DataField::code_code": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::fmno": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::evaluationYear": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::country": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::currency_code": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::createdAt": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::modifiedAt": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::modifiedBy": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::startDate": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::endDate": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::active": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::amount": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::description": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::nature": {
+                                            "width": "100%"
+                                        },
+                                        "DataField::distributionPer": {
+                                            "width": "100%"
+                                        }
+                                    }
+                                }
+                            },
+                            "initialLoad": "Enabled",
+                            "content": {
+                                "header": {
+                                    "actions": {
+                                        "templateBtn": {
+                                            "id": "templateBtnButton",
+                                            "text": "Download Template",
+                                            "press": "com.pas.pasawardsf.custom.ListReportExtController.onDownloadTemplate",
+                                            "requiresSelection": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "AwardsObjectPage": {
+                    "type": "Component",
+                    "id": "AwardsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Awards"
+                        }
+                    }
+                },
+                "AwardsCreatePage": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewName": "com.pas.pasawardsf.custom.onCreate",
+                    "viewId": "onCreate",
+                    "viewLevel": 2,
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Awards"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "pas_partnerawards_fs"
+    }
+}

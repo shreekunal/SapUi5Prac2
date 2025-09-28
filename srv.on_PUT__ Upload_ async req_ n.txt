@@ -1,0 +1,270 @@
+ srv.on('PUT', "Upload", async (req, next) => {
+        console.log('In Upload');
+        console.log('ReqUser:  ' + req.user);
+
+        if (req.data.excel) {
+            var entity = req.headers.slug; var datetime = new Date(); let access = 'RW'; var valid = [];
+            let currDate = datetime.toISOString().slice(0, 10);
+            // var test2 = await db.run(SELECT.from(RolesNormalized).where({
+            //     email  : req.user.id
+            // }));
+            valid = await db.run(SELECT.from(RolesNormalized).where`((email = ${req.user.id} or fmno = ${req.user.id}) and entityName = ${entity} and accessType = ${access} and (startDate <= ${currDate} and endDate >= ${currDate}))`);
+            if (valid.length > 0) {
+                const stream = new PassThrough();
+                var buffers = [];
+                req.data.excel.pipe(stream);
+                await new Promise((resolve, reject) => {
+                    stream.on('data', dataChunk => {
+                        buffers.push(dataChunk);
+                    });
+                    stream.on('end', AsyncResource.bind(async () => {
+                        var buffer = Buffer.concat(buffers);
+                        var workbook = XLSX.read(buffer, { type: "buffer", cellText: true, cellDates: true, dateNF: 'dd"."mm"."yyyy', cellNF: true, rawNumbers: false });
+                        let data = []
+                        const sheets = workbook.SheetNames
+                        for (let i = 0; i < sheets.length; i++) {
+                            const temp = XLSX.utils.sheet_to_json(
+                                workbook.Sheets[workbook.SheetNames[i]], { cellText: true, cellDates: true, dateNF: 'dd"."mm"."yyyy', rawNumbers: false })
+                            temp.forEach((res, index) => {
+                                if (index === 0 && entity != 'CompensationDetails') return;
+                                data.push(JSON.parse(JSON.stringify(res)))
+                            })
+                        }
+                        // Printing & inserting data
+                        if (data.length) {
+                            if (entity === 'Awards') {
+                                // let entity = 'Awards';
+                                var oData = [];
+                                var validated = "";
+                                if (Array.isArray(data)) {
+                                    oData = data;
+                                } else {
+                                    oData.push(data);
+                                }
+                                validated = utils_f.mandatoryValidations(oData);
+
+                            }else if (entity === 'Transitionbonus') {
+                                var oData = [];
+                                var validated = "";
+                                if (Array.isArray(data)) {
+                                    oData = data;
+                                } else {
+                                    oData.push(data);
+                                }
+                                validated = utils_f.mandatoryValidationsTB(oData);
+                            }
+                            else if (entity === 'DeliveryDetails') {
+                                var validated = "";
+                                validated = await utils_f.Upload_Validations_DeliveryDetails(data, "Upload");
+                            }
+                            else if (entity === 'DeliveryDetailsTemp') {
+                                var validated = "";
+                                validated = await utils_f.Upload_Validations_DeliveryDetailsTemp(data, "Upload");
+                            }
+                            else if (entity === 'AaAccrual') {
+                                var validated = "";
+                                validated = await utils_f.Upload_Validations_AaAccrual(data, "Upload");
+                            }
+                            else if (entity === 'DeliveryEstimates') {
+                                var validated = "";
+                                validated = await utils_f.Upload_DeliveryEstimates(data, srv);
+                                if (!validated)
+                                    reject(req.error(401, JSON.stringify(data)));
+                                else {
+                                    resolve(req.notify({
+                                        message: 'Upload Successful',
+                                        code: 200
+                                    }));
+                                }
+                            }
+                            else if (entity === 'PartnerPull') {
+                                var validated = "";
+                                validated = await utils_f.UpdatePartnerPull(data, srv);
+                                if (!validated)
+                                    reject(req.error(401, JSON.stringify(data)));
+                                else {
+                                    resolve(req.notify({
+                                        message: 'Update Successful',
+                                        code: 200
+                                    }));
+                                }
+                            }
+                            else if (entity === 'JournalEntry') {
+                                var validJournal = "";
+                                /*    jeFieldArr = ['costCenter', 'fCat', 'glAccount', 'awardCountry', 'enteredCurrency_code', 'enteredCredit', 'enteredDebit', 'jeCategory', 'fmno', 'comments', 'jeType', 'profitCenter']
+                                    const [columns] = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+                                    columns.forEach(column => {
+                                        if (jeFieldArr.includes(column)) {
+                                            validated = true;
+                                        }
+                                        else {
+                                            validated = false;
+                                            reject(req.error(402, 'Please remove the additional columns added that are not part of downloaded template.'));
+                                        };
+                                    })
+                                    if (validated) {*/
+                                validJournal = await utils_f.Upload_Validations_JournalEntry(data, req.user, "Upload");
+                                if (!validJournal.validated) {
+                                    if (validJournal.message === undefined || validJournal.message === '') {
+                                        const aResult = data.map(({ costCenter, fCat, glAccount, awardCountry, enteredCurrency_code, enteredNet, jeCategory, fmno, comments, jeType, profitCenter, interCompany, companyCode, evaluationYear, ErrorComment }) => ({
+                                            costCenter, fCat, glAccount, awardCountry, enteredCurrency_code, enteredNet, jeCategory, fmno, comments, jeType, profitCenter, interCompany, companyCode, evaluationYear, ErrorComment
+                                        }));
+                                        reject(req.error(401, JSON.stringify(aResult)));
+                                    } else {
+                                        reject(req.error(405, validJournal.message));
+                                    }
+                                    validated = false;
+                                } else {
+                                    validated = true;
+                                }
+                                //}
+                            }
+                            else if (entity === 'PerformanceReporting') {
+                                var validated = "";
+                                validated = await utils_f.Upload_Validations_PerformanceReporting(data);
+                            }
+                            // else if (entity === 'Transitionbonus') {
+                            //     var validated = "";
+                            //     validated = await utils_f.Upload_Validations_TransitionBonus(data);
+                            // }
+                            else if (entity == 'TBInterestRate') {
+                                for(var i = 0; i < data.length ;i++){
+                                    let query = await db.run(UPDATE(TBInterestRate).set({ active: false }).where({ interestYear: data[i].interestYear,currency:data[i].currency }));
+                                }
+                            }
+                            else {
+                                validated = true;
+                            }
+                            if (validated === false && (entity === 'DeliveryDetails' || entity === 'AaAccrual' || entity === 'JournalEntry' || entity === 'PerformanceReporting' || entity === 'DeliveryDetailsTemp')) {
+                                reject(req.error(401, JSON.stringify(data)));
+                            }
+                            /*else if (validated === false && entity === 'JournalEntry') {
+                              //  reject(req.error(401, JSON.stringify(data)));
+                            }*/
+                            else if (validated == false && entity == 'Awards') {
+
+                                reject(req.error(401, JSON.stringify(data)));
+                            }
+                            else if (entity == 'CompensationDetails') {
+
+                                let payrollCodes = data.map(val => val.pasPayrollCodeValue);
+                                payrollCodes = [...new Set(payrollCodes)];
+                                let query = SELECT.from(PayrollCodes).columns('pasCode', 'pasDescription')
+                                    .where({ pasCode: payrollCodes });
+
+                                let cdxError = '';
+                                const payrollCodeResult = await db.run(query);
+                                if (payrollCodeResult && payrollCodeResult.length > 0) {
+                                    data.forEach(row => {
+                                        let payrollObjs = payrollCodeResult.filter(val => val.pasCode == row.pasPayrollCodeValue);
+                                        if (Boolean(row.pasPayrollCodeValue)) {
+                                            if (payrollObjs.length == 0) {
+                                                cdxError += 'Incorrect payroll code ' + row.pasPayrollCodeValue + "\n";
+                                            }
+                                            else if (Boolean(row.pasPayrollCodeDescription)) {
+                                                let payrollObj = payrollObjs.find(val => val.pasDescription == row.pasPayrollCodeDescription);
+                                                if (!payrollObj) {
+                                                    cdxError += 'Incorrect payroll code description for payroll code ' + row.pasPayrollCodeValue + "\n";
+                                                }
+                                            }
+                                        }
+                                    })
+                                }
+
+                                if (cdxError == '') {
+
+                                    let Ids = data.map(val => val.ID);
+                                    let query = SELECT.from(CompensationDetails).where({ ID: Ids });
+                                    let aOriginalObj = await db.run(query);
+
+                                    let aApprovedPosted = aOriginalObj.filter(val => {
+                                        return (val.approvalStatus == 'Posted' || val.approvalStatus == 'Approved')
+                                    });
+
+                                    if (aApprovedPosted.length > 0) {
+                                        reject(req.error(402, 'Approved / Posted records cannot be uploaded', "Upload Failed"));
+                                    }
+                                    else {
+                                        const resUpdate = await updateCDX(data, aOriginalObj, srv);
+                                        if (resUpdate && resUpdate.length == data.length) {
+                                            resolve(req.info({
+                                                message: 'Upload successful',
+                                                code: 200,
+                                            }));
+                                        }
+                                        else {
+                                            reject(req.error(402, "Upload Failed", resUpdate));
+                                        }
+                                    }
+
+                                }
+                                else {
+                                    reject(req.error(402, cdxError, "Upload Failed"));
+                                }
+
+                            }
+                            else if (entity == 'PartnerPull') {
+                                resolve(req.notify({
+                                    message: 'Update Successful',
+                                    code: 200
+                                }));
+                            }
+                            
+                            else {
+                                const resUpdate = await utils_f.updateEntity(entity, data, req.user, srv);
+
+                                try {
+                                    var code = resUpdate.code
+                                } catch {
+                                    code = '';
+                                }
+
+                                if (resUpdate && resUpdate.length > 0) {
+                                    var msg = resUpdate.find(x => x.message != '');
+                                    if (msg && msg.message) {
+                                        reject(req.error(401, JSON.stringify(resUpdate)));
+                                    }
+                                }
+
+                                // Start Sikander- Common error download
+
+                                if (resUpdate == -1)
+                                    reject(req.error(401, JSON.stringify(data)));
+                                else if (resUpdate === 401)
+                                    reject(req.error(401, JSON.stringify(data)));
+                                else if (code === 402)
+                                    try {
+                                        reject(req.error(402, resUpdate.message, JSON.stringify(resUpdate.details[0])));
+                                    } catch (e) {
+                                        reject(req.error(402, resUpdate.message, "Upload Failed"));
+                                    }
+                                else if (code === 407) // DD/RD post to JE failed
+                                    reject(req.error(401, resUpdate.message));
+                                else if (data[0].UploadMessage) // DD/RD post to JE Success
+                                    resolve(req.info({
+                                        message: data[0].UploadMessage,
+                                        code: 200,
+                                    }));
+
+                                else {
+                                    resolve(req.notify({
+                                        message: 'Upload Successful',
+                                        code: 200
+                                    }));  
+                                    
+                                }
+                            }
+                            // End Sikander- Common error download
+                        } else {
+                            reject(req.error(403, `File is Empty`, 'Upload Failed'));
+                        }
+                    }));
+                });
+            } else {
+                req.error(402, `User is unauthorized for ${entity} create`);
+            }
+
+        } else {
+            return next();
+        }
+    });

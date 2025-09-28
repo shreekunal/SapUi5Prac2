@@ -1,0 +1,20 @@
+{
+    "code_code": "SA",
+    "fmno": "",
+    "evaluationYear": "",
+    "active": "",
+    "nature": "Normal",
+    "dates": [
+        {
+            "country": "",
+            "currency_code": "",
+            "amount": "",
+            "description": "",
+            "companyCode": "",
+            "StartDate": "",
+            "EndDate": "",
+            "EditableStartDate": true,
+            "EditableEndDate": false
+        }
+    ]
+}

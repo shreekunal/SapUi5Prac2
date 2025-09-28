@@ -78,7 +78,12 @@
       }
     },
     "resources": {
-      "css": []
+      "css": [],
+      "js": [
+        {
+          "uri": "libs/xlsx.full.min.js"
+        }
+      ]
     },
     "routing": {
       "config": {},
@@ -126,7 +131,39 @@
                   }
                 }
               },
-              "initialLoad": "Enabled"
+              "initialLoad": "Enabled",
+              "content": {
+                "header": {
+                  "actions": {
+                    "uploadIncidents": {
+                      "press": "ns.incidents.ext.controller.UploadController.Upload",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "{i18n>upload}"
+                    },
+                    "downloadTemplate": {
+                      "press": "ns.incidents.ext.controller.DownloadTemplateController.onDownloadTemplate",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "{i18n>downloadTemplate}",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "uploadIncidents"
+                      }
+                    },
+                    "exportIncidents": {
+                      "press": "ns.incidents.ext.controller.ExportController.onExportData",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "{i18n>export}",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "downloadTemplate"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         },

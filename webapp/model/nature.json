@@ -1,0 +1,11 @@
+{
+    "data" : [ { 
+        "Nature" : "Normal"
+    },
+    {
+        "Nature" :"Final"
+    },
+    {
+        "Nature" :"Estimated"
+    }]
+}
