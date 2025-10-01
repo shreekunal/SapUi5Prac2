@@ -1,5 +1,0 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <SelectDialog id="selectDialogCountry" title="Country" items="{/CountryAPI}" search=".onValueHelpSearchCountry" confirm=".onValueHelpCloseCountry" cancel=".onValueHelpCloseCountry">
-        <StandardListItem id="_IDGenStandardListItemCountry" title="{countryCode}" info="{countryName}" />
-    </SelectDialog>
-</core:FragmentDefinition>

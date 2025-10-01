@@ -89,12 +89,12 @@ sap.ui.define(["sap/m/MessageBox", "sap/m/MessageToast", "sap/ui/core/UIComponen
                     oFileUploader.removeHeaderParameter('slug');
                     oFileUploader.removeAllHeaderParameters();
                     oFileUploader.addHeaderParameter(headPar);
-                    
+
                     // Get the service URL directly from the model like webapp does
                     var oModel = oExtensionAPI.getModel();
                     var sServiceUrl = oModel.sServiceUrl || "/odata/v4/processor/";
                     var sUploadUri = sServiceUrl + "Upload/excel";
-                    
+
                     oFileUploader.setUploadUrl(sUploadUri);
                     oFileUploader
                         .checkFileReadable()

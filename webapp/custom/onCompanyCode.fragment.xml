@@ -1,5 +1,0 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <SelectDialog id="selectDialogCC" title="Company Codes" items="{/CompanyCodeAPI}" search=".onValueHelpSearchCC" confirm=".onValueHelpCloseCC" cancel=".onValueHelpCloseCC">
-        <StandardListItem id="_IDGenStandardListItem2" title="{companyCode}" info="{companyCodeName}" />
-    </SelectDialog>
-</core:FragmentDefinition>

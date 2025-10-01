@@ -52,6 +52,15 @@
         "sap.fe.templates": {}
       }
     },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController#ns.incidents::IncidentsObjectPage": {
+            "controllerName": "ns.incidents.ext.controller.IncidentEditFlowExtension"
+          }
+        }
+      }
+    },
     "contentDensities": {
       "compact": true,
       "cozy": true
