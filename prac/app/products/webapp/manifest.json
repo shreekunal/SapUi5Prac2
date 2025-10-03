@@ -113,7 +113,24 @@
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "ResponsiveTable"
+                    "type": "ResponsiveTable",
+                    "quickVariantSelection": {
+                      "paths": [
+                        {
+                          "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#AllProducts"
+                        },
+                        {
+                          "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#HighStock"
+                        },
+                        {
+                          "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#MediumStock"
+                        },
+                        {
+                          "annotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#LowStock"
+                        }
+                      ],
+                      "showCounts": true
+                    }
                   }
                 }
               },
@@ -128,7 +145,29 @@
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Products"
+              "contextPath": "/Products",
+              "controlConfiguration": {
+                "_EditAction": {
+                  "determining": true
+                }
+              },
+              "content": {
+                "header": {
+                  "visible": true,
+                  "actions": {
+                    "discntPrdct": {
+                      "press": "products.ext.controller.DiscntProduct.discntProduct",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "{i18n>discontinueProduct}",
+                      "position": {
+                        "placement": "Before",
+                        "anchor": "EditAction"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
