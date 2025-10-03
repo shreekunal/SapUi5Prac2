@@ -2,7 +2,7 @@ using CatalogService as service from '../../srv/cat-service';
 
 annotate service.Products with @(
     UI.DeleteHidden              : true,
-    odata.draft.bypass            : true,
+    odata.draft.bypass           : true,
     UI.FieldGroup #GeneratedGroup: {
         $Type: 'UI.FieldGroupType',
         Data : [

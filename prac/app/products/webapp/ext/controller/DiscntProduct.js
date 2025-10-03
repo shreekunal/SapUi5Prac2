@@ -1,6 +1,6 @@
 sap.ui.define([
     "sap/m/MessageToast"
-], function(MessageToast) {
+], function (MessageToast) {
     'use strict';
 
     return {
@@ -10,7 +10,7 @@ sap.ui.define([
          * @param oContext the context of the page on which the event was fired. `undefined` for list report page.
          * @param aSelectedContexts the selected contexts of the table rows.
          */
-        discntProduct: async function(oContext, aSelectedContexts) {
+        discntProduct: async function (oContext, aSelectedContexts) {
             if (!oContext) {
                 MessageToast.show("No context available.");
                 return;
