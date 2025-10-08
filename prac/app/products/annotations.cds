@@ -77,7 +77,7 @@ annotate service.Products with @(
         Value      : UnitPrice,
         Title      : 'Unit Price',
         Criticality: 3,
-        // Success/Green
+    // Success/Green
     },
     UI.Chart #stockChart            : {
         $Type            : 'UI.ChartDefinitionType',
