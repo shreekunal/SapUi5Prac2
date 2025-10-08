@@ -54,7 +54,42 @@ annotate service.Products with @(
                 Value            : Discontinued,
                 ![@UI.Importance]: #High,
             },
+            {
+                $Type            : 'UI.DataField',
+                Label            : '{i18n>ProductImage}',
+                Value            : image,
+                ![@UI.Importance]: #High,
+            },
         ],
+    },
+    UI.FieldGroup #ImageGroup    : {
+        $Type: 'UI.FieldGroupType',
+        Data : [{
+            $Type            : 'UI.DataField',
+            Label            : '{i18n>ProductImage}',
+            Value            : image,
+            ![@UI.Importance]: #High,
+        }, ],
+    },
+    UI.DataPoint #stockChart     : {
+        $Type        : 'UI.DataPointType',
+        Value        : UnitsInStock,
+        TargetValue  : 50,
+        ForecastValue: UnitsOnOrder,
+        Criticality  : stockCriticality,
+    },
+    UI.Chart #stockChart         : {
+        $Type            : 'UI.ChartDefinitionType',
+        Title            : 'Stock Level',
+        Description      : 'Stock Micro Chart',
+        ChartType        : #Bullet,
+        Measures         : [UnitsInStock],
+        MeasureAttributes: [{
+            $Type    : 'UI.ChartMeasureAttributeType',
+            Measure  : UnitsInStock,
+            Role     : #Axis1,
+            DataPoint: '@UI.DataPoint#stockChart',
+        }]
     },
     UI.Facets                    : [
         {
@@ -83,15 +118,25 @@ annotate service.Products with @(
             Value: ProductID,
         },
         {
+            $Type            : 'UI.DataField',
+            Value            : image,
+            Label            : '{i18n>Image}',
+            ![@UI.Importance]: #High,
+        },
+        {
             $Type: 'UI.DataField',
             Label: '{i18n>ProductName}',
             Value: ProductName,
         },
         {
-            $Type            : 'UI.DataField',
-            Value            : Image,
-            Label            : '{i18n>Image}',
-            ![@UI.Importance]: #Medium,
+            $Type : 'UI.DataField',
+            Value : UnitsInStock,
+            Label : '{i18n>Stocks}',
+        },
+        {
+            $Type : 'UI.DataFieldForAnnotation',
+            Target: '@UI.Chart#stockChart',
+            Label : '{i18n>StockChart}',
         },
         {
             $Type: 'UI.DataField',
@@ -100,24 +145,13 @@ annotate service.Products with @(
         },
         {
             $Type: 'UI.DataField',
-            Value: Discontinued,
-            Label: '{i18n>Discontinued}',
-        },
-        {
-            $Type: 'UI.DataField',
-            Value: QuantityPerUnit,
-            Label: '{i18n>Quantity}',
-        },
-        {
-            $Type: 'UI.DataField',
             Value: UnitPrice,
             Label: '{i18n>UnitPrice}',
         },
         {
-            $Type      : 'UI.DataField',
-            Value      : UnitsInStock,
-            Label      : '{i18n>Stock}',
-            Criticality: UnitsInStock,
+            $Type: 'UI.DataField',
+            Value: Discontinued,
+            Label: '{i18n>Discontinued}',
         },
         {
             $Type      : 'UI.DataField',
@@ -126,9 +160,8 @@ annotate service.Products with @(
             Criticality: UnitsOnOrder,
         },
         {
-            $Type: 'UI.DataField',
-            Value: suppliers.ID,
-            Label: '{i18n>SupplierId}',
+            $Type : 'UI.DataField',
+            Value : createdAt,
         },
     ],
     UI.SelectionFields           : [category_ID, ],
@@ -225,12 +258,18 @@ annotate service.Categories with {
     CategoryID @Common.Text: CategoryName
 };
 
-// Annotate Image field for proper display
+// Annotate image field for proper display and upload
 annotate service.Products with {
-    Image @(
-        UI.IsImageURL     : true,
-        Semantics.ImageUrl: true,
+    image     @(
+        UI.IsImageURL            : false,
+        Core.AcceptableMediaTypes: [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/gif'
+        ]
     );
+    imageType @(Core.IsMediaType: true);
 };
 
 // Suppliers annotations

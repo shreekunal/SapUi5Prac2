@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified">
+
+    <Dialog
+        id="imageUploadDialog"
+        title="{i18n>UploadProductImage}"
+        class="sapUiMediumMargin"
+        contentWidth="400px"
+        beforeOpen=".onBeforeOpen"
+        afterClose=".onAfterClose">
+
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <u:FileUploader
+                    id="imageFileUploader"
+                    name="file"
+                    uploadUrl=""
+                    uploadOnChange="false"
+                    change=".onFileChange"
+                    width="100%" />
+                <Text text="{i18n>SupportedFormats}" class="sapUiTinyMarginTop" />
+            </VBox>
+        </content>
+
+        <buttons>
+            <Button
+                text="{i18n>UploadFile}"
+                type="Emphasized"
+                press=".onUploadPress" />
+            <Button
+                text="{i18n>RemoveImage}"
+                type="Transparent"
+                press=".onRemoveImage"
+                visible="{= !!${imageName}}" />
+            <Button
+                text="{i18n>Cancel}"
+                press=".onUploadCancel" />
+        </buttons>
+
+    </Dialog>
+
+</core:FragmentDefinition>

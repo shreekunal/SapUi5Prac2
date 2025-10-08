@@ -131,6 +131,17 @@
                       ],
                       "showCounts": true
                     }
+                  },
+                  "columns": {
+                    "DataField::image": {
+                      "width": "80px"
+                    },
+                    "DataField::ProductName": {
+                      "width": "150px"
+                    },
+                    "DataField::category::CategoryName": {
+                      "width": "200px"
+                    }
                   }
                 }
               },
@@ -155,6 +166,16 @@
                 "header": {
                   "visible": true,
                   "actions": {
+                    "uploadImage": {
+                      "press": "products.ext.controller.UploadController.onUploadImage",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "{i18n>UploadImage}",
+                      "position": {
+                        "placement": "Before",
+                        "anchor": "EditAction"
+                      }
+                    },
                     "discntPrdct": {
                       "press": "products.ext.controller.DiscntProduct.discntProduct",
                       "visible": true,

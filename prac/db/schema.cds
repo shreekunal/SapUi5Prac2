@@ -16,7 +16,10 @@ entity Products : cuid, managed {
     UnitsOnOrder    : Int16          @mandatory;
     ReorderLevel    : Int16          @mandatory;
     Discontinued    : Boolean        @mandatory default false;
-    Image           : LargeBinary; // Added Image field for product
+    // Product image with proper media type handling
+    image           : LargeBinary    @Core.MediaType: imageType  @Core.ContentDisposition.Filename: imageName;
+    imageType       : String         @Core.IsMediaType: true;
+    imageName       : String;
     suppliers       : Composition of many Suppliers
                           on suppliers.product = $self;
     attachments     : Composition of many ProductAttachments
