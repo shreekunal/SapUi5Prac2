@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <VBox id="CustomHeaderFacetCategory" displayInline="true">
+        <HBox>
+            <core:Icon src="sap-icon://tag" color="#bb0000" size="1.5rem"
+                class="sapUiSmallMarginEnd" />
+            <VBox>
+                <Text text="{category/CategoryName}" class="sapUiSmallMarginBottom">
+                    <customData>
+                        <core:CustomData key="style" value="font-weight:bold;font-size:1.1rem;" />
+                    </customData>
+                </Text>
+                <Text text="{category/Description}" class="sapUiTinyMarginTop">
+                    <customData>
+                        <core:CustomData key="style" value="color:#666;font-size:0.9rem;" />
+                    </customData>
+                </Text>
+            </VBox>
+        </HBox>
+    </VBox>
+</core:FragmentDefinition>

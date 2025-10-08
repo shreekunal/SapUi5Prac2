@@ -1,9 +1,9 @@
 using CatalogService as service from '../../srv/cat-service';
 
 annotate service.Products with @(
-    UI.DeleteHidden              : true,
-    odata.draft.bypass           : true,
-    UI.FieldGroup #GeneratedGroup: {
+    UI.DeleteHidden                 : true,
+    odata.draft.bypass              : true,
+    UI.FieldGroup #GeneratedGroup   : {
         $Type: 'UI.FieldGroupType',
         Data : [
             {
@@ -56,7 +56,7 @@ annotate service.Products with @(
             },
         ],
     },
-    UI.FieldGroup #ImageGroup    : {
+    UI.FieldGroup #ImageGroup       : {
         $Type: 'UI.FieldGroupType',
         Data : [{
             $Type            : 'UI.DataField',
@@ -65,14 +65,21 @@ annotate service.Products with @(
             ![@UI.Importance]: #High,
         }, ],
     },
-    UI.DataPoint #stockChart     : {
+    UI.DataPoint #stockChart        : {
         $Type        : 'UI.DataPointType',
         Value        : UnitsInStock,
         TargetValue  : 50,
         ForecastValue: UnitsOnOrder,
         Criticality  : stockCriticality,
     },
-    UI.Chart #stockChart         : {
+    UI.DataPoint #pricePoint        : {
+        $Type      : 'UI.DataPointType',
+        Value      : UnitPrice,
+        Title      : 'Unit Price',
+        Criticality: 3,
+        // Success/Green
+    },
+    UI.Chart #stockChart            : {
         $Type            : 'UI.ChartDefinitionType',
         Title            : 'Stock Level',
         Description      : 'Stock Micro Chart',
@@ -85,7 +92,27 @@ annotate service.Products with @(
             DataPoint: '@UI.DataPoint#stockChart',
         }]
     },
-    UI.Facets                    : [
+    UI.HeaderFacets                 : [{
+        $Type : 'UI.ReferenceFacet',
+        ID    : 'HeaderFacetIdentifier1',
+        Target: '@UI.FieldGroup#HeaderGeneralInfo',
+    }],
+    UI.FieldGroup #HeaderGeneralInfo: {
+        $Type: 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type: 'UI.DataField',
+                Value: ProductName,
+                Label: 'Product Name',
+            },
+            {
+                $Type: 'UI.DataField',
+                Value: UnitsInStock,
+                Label: 'Stock',
+            },
+        ],
+    },
+    UI.Facets                       : [
         {
             $Type : 'UI.ReferenceFacet',
             ID    : 'GeneratedFacet1',
@@ -105,7 +132,7 @@ annotate service.Products with @(
             Target: 'attachments/@UI.LineItem',
         },
     ],
-    UI.LineItem                  : [
+    UI.LineItem                     : [
         {
             $Type: 'UI.DataField',
             Label: '{i18n>ProductId}',
@@ -154,8 +181,8 @@ annotate service.Products with @(
             Label: '{i18n>Discontinued}',
         },
     ],
-    UI.SelectionFields           : [category_ID, ],
-    UI.HeaderInfo                : {
+    UI.SelectionFields              : [category_ID, ],
+    UI.HeaderInfo                   : {
         Title         : {
             $Type: 'UI.DataField',
             Value: ProductName,
@@ -166,8 +193,28 @@ annotate service.Products with @(
             $Type: 'UI.DataField',
             Value: UnitsInStock,
         },
-        ImageUrl      : ProductName,
+        ImageUrl      : image,
     },
+    UI.Identification               : [
+        {
+            $Type            : 'UI.DataField',
+            Label            : '{i18n>ProductName}',
+            Value            : ProductName,
+            ![@UI.Importance]: #High,
+        },
+        {
+            $Type            : 'UI.DataField',
+            Label            : '{i18n>UnitPrice}',
+            Value            : UnitPrice,
+            ![@UI.Importance]: #High,
+        },
+        {
+            $Type            : 'UI.DataField',
+            Label            : '{i18n>Category}',
+            Value            : category_ID,
+            ![@UI.Importance]: #High,
+        },
+    ],
 );
 
 annotate service.Products with {

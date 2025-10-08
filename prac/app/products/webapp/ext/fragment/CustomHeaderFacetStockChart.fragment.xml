@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mc="sap.suite.ui.microchart">
+    <VBox id="CustomHeaderFacetStockChart" displayInline="true">
+        <mc:ColumnMicroChart size="S" class="sapUiSmallMarginTop sapUiSmallMarginEnd">
+            <mc:columns>
+                <mc:ColumnMicroChartData
+                    value="{UnitsInStock}"
+                    color="{= ${UnitsInStock} &gt;= 50 ? 'Good' : ${UnitsInStock} &gt;= 20 ? 'Critical' : 'Error'}"
+                    label="Stock"
+                />
+                <mc:ColumnMicroChartData
+                    value="{UnitsOnOrder}"
+                    color="Neutral"
+                    label="Order"
+                />
+            </mc:columns>
+        </mc:ColumnMicroChart>
+    </VBox>
+</core:FragmentDefinition>

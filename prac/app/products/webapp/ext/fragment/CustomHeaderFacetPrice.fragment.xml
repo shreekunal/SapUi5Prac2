@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <VBox id="CustomHeaderFacetPrice" displayInline="true">
+        <HBox>
+            <core:Icon src="sap-icon://product" color="#0854a0" size="1.8rem"
+                class="sapUiSmallMarginEnd" />
+            <ObjectNumber
+                state="Success"
+                number="{UnitPrice}"
+                unit="USD"
+            />
+        </HBox>
+    </VBox>
+</core:FragmentDefinition>

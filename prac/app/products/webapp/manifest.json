@@ -49,7 +49,8 @@
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
-        "sap.fe.templates": {}
+        "sap.fe.templates": {},
+        "sap.suite.ui.microchart": {}
       }
     },
     "contentDensities": {
@@ -165,11 +166,42 @@
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
-              "editableHeaderContent": false,
+              "editableHeaderContent": true,
               "contextPath": "/Products",
               "controlConfiguration": {
                 "_EditAction": {
                   "determining": true
+                },
+                "@com.sap.vocabularies.UI.v1.HeaderFacets": {
+                  "facets": {
+                    "CustomHeaderFacetPrice": {
+                      "template": "products.ext.fragment.CustomHeaderFacetPrice",
+                      "title": "Product Price",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "HeaderFacetIdentifier1"
+                      },
+                      "flexSettings": {
+                        "designtime": "not-adaptable-visibility"
+                      }
+                    },
+                    "CustomHeaderFacetStockChart": {
+                      "template": "products.ext.fragment.CustomHeaderFacetStockChart",
+                      "title": "Stock Distribution Chart",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "CustomHeaderFacetPrice"
+                      }
+                    },
+                    "CustomHeaderFacetCategory": {
+                      "template": "products.ext.fragment.CustomHeaderFacetCategory",
+                      "title": "Category Info",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "CustomHeaderFacetStockChart"
+                      }
+                    }
+                  }
                 }
               },
               "content": {
@@ -186,31 +218,23 @@
                         "anchor": "EditAction"
                       }
                     },
-                    "continueProduct": {
+                    "customContinueProduct": {
                       "press": "products.ext.controller.CustomActions.continueProduct",
                       "visible": true,
-                      "enabled": true,
-                      "text": "Continue Product",
-                      "position": {
-                        "placement": "Before",
-                        "anchor": "EditAction"
-                      }
+                      "enabled": "{= !${ui>/isEditable}}",
+                      "text": "Continue Product"
                     },
-                    "discontinueProduct": {
+                    "customDiscontinueProduct": {
                       "press": "products.ext.controller.CustomActions.discontinueProduct",
                       "visible": true,
-                      "enabled": true,
-                      "text": "Discontinue Product",
-                      "position": {
-                        "placement": "Before",
-                        "anchor": "EditAction"
-                      }
+                      "enabled": "{= !${ui>/isEditable}}",
+                      "text": "Discontinue Product"
                     },
                     "DataFieldForActionGroup::ProductActionGroup": {
                       "text": "Product Actions",
                       "menu": [
-                        "DataFieldForAction::CatalogService.continueProduct",
-                        "DataFieldForAction::CatalogService.discontinueProduct"
+                        "customContinueProduct",
+                        "customDiscontinueProduct"
                       ],
                       "position": {
                         "placement": "Before",
