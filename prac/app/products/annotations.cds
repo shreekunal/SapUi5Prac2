@@ -20,14 +20,14 @@ annotate service.Products with @(
             },
             {
                 $Type            : 'UI.DataField',
-                Label            : '{i18n>QuantityPerUnit}',
-                Value            : QuantityPerUnit,
+                Label            : '{i18n>UnitPrice}',
+                Value            : UnitPrice,
                 ![@UI.Importance]: #High,
             },
             {
                 $Type            : 'UI.DataField',
-                Label            : '{i18n>UnitPrice}',
-                Value            : UnitPrice,
+                Label            : '{i18n>PaymentStatus}',
+                Value            : PaymentStatus,
                 ![@UI.Importance]: #High,
             },
             {
@@ -40,12 +40,6 @@ annotate service.Products with @(
                 $Type            : 'UI.DataField',
                 Label            : '{i18n>UnitsOnOrder}',
                 Value            : UnitsOnOrder,
-                ![@UI.Importance]: #High,
-            },
-            {
-                $Type            : 'UI.DataField',
-                Label            : '{i18n>ReorderLevel}',
-                Value            : ReorderLevel,
                 ![@UI.Importance]: #High,
             },
             {
@@ -129,14 +123,20 @@ annotate service.Products with @(
             Value: ProductName,
         },
         {
-            $Type : 'UI.DataField',
-            Value : UnitsInStock,
-            Label : '{i18n>Stocks}',
+            $Type: 'UI.DataField',
+            Value: UnitsInStock,
+            Label: '{i18n>Stocks}',
         },
         {
             $Type : 'UI.DataFieldForAnnotation',
             Target: '@UI.Chart#stockChart',
             Label : '{i18n>StockChart}',
+        },
+        {
+            $Type      : 'UI.DataField',
+            Value      : UnitsOnOrder,
+            Label      : '{i18n>Order}',
+            Criticality: UnitsOnOrder,
         },
         {
             $Type: 'UI.DataField',
@@ -152,16 +152,6 @@ annotate service.Products with @(
             $Type: 'UI.DataField',
             Value: Discontinued,
             Label: '{i18n>Discontinued}',
-        },
-        {
-            $Type      : 'UI.DataField',
-            Value      : UnitsOnOrder,
-            Label      : '{i18n>Order}',
-            Criticality: UnitsOnOrder,
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : createdAt,
         },
     ],
     UI.SelectionFields           : [category_ID, ],

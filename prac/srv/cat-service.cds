@@ -11,6 +11,10 @@ service CatalogService {
                      then 2 // Warning (Orange) - Medium stock
                 else 1 // Error (Red) - Low stock
             end as stockCriticality : Integer,
+        }
+        actions {
+            action continueProduct();
+            action discontinueProduct();
         };
 
     entity Suppliers          as projection on my.Suppliers;

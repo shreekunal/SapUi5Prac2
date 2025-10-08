@@ -19,7 +19,12 @@
                     uploadUrl=""
                     uploadOnChange="false"
                     change=".onFileChange"
-                    width="100%" />
+                    width="100%"
+                    placeholder="{i18n>SelectImageFile}" />
+                <Text
+                    id="imageSelectedFileName"
+                    text="No file selected"
+                    class="sapUiTinyMarginTop sapUiSmallMarginBottom" />
                 <Text text="{i18n>SupportedFormats}" class="sapUiTinyMarginTop" />
             </VBox>
         </content>

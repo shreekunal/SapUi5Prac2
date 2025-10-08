@@ -141,6 +141,16 @@
                     },
                     "DataField::category::CategoryName": {
                       "width": "200px"
+                    },
+                    "CustomPaymentStatusColumn": {
+                      "header": "{i18n>paymentProcess}",
+                      "importance": "High",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "DataField::UnitsOnOrder"
+                      },
+                      "template": "products.view.PaymentStatus",
+                      "availability": "Default"
                     }
                   }
                 }
@@ -176,11 +186,32 @@
                         "anchor": "EditAction"
                       }
                     },
-                    "discntPrdct": {
-                      "press": "products.ext.controller.DiscntProduct.discntProduct",
+                    "continueProduct": {
+                      "press": "products.ext.controller.CustomActions.continueProduct",
                       "visible": true,
                       "enabled": true,
-                      "text": "{i18n>discontinueProduct}",
+                      "text": "Continue Product",
+                      "position": {
+                        "placement": "Before",
+                        "anchor": "EditAction"
+                      }
+                    },
+                    "discontinueProduct": {
+                      "press": "products.ext.controller.CustomActions.discontinueProduct",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "Discontinue Product",
+                      "position": {
+                        "placement": "Before",
+                        "anchor": "EditAction"
+                      }
+                    },
+                    "DataFieldForActionGroup::ProductActionGroup": {
+                      "text": "Product Actions",
+                      "menu": [
+                        "DataFieldForAction::CatalogService.continueProduct",
+                        "DataFieldForAction::CatalogService.discontinueProduct"
+                      ],
                       "position": {
                         "placement": "Before",
                         "anchor": "EditAction"

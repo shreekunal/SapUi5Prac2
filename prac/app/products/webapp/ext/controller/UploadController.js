@@ -6,7 +6,6 @@ sap.ui.define([
     function _createUploadController(oExtensionAPI, oBindingContext) {
         var oUploadDialog;
         var oSelectedFile;
-        var oFileInput;
 
         function byId(sId) {
             return sap.ui.core.Fragment.byId("productImageUploadDialog", sId);
@@ -20,72 +19,55 @@ sap.ui.define([
             onBeforeOpen: function (oEvent) {
                 oUploadDialog = oEvent.getSource();
                 oExtensionAPI.addDependent(oUploadDialog);
-                
+
                 if (oBindingContext) {
                     oUploadDialog.setBindingContext(oBindingContext);
                 }
             },
 
             onAfterClose: function (oEvent) {
-                if (oFileInput && oFileInput.parentNode) {
-                    oFileInput.parentNode.removeChild(oFileInput);
-                    oFileInput = null;
-                }
-                
                 oExtensionAPI.removeDependent(oUploadDialog);
                 oUploadDialog.destroy();
                 oUploadDialog = undefined;
                 oSelectedFile = null;
             },
 
-            onFileSelectPress: function () {
-                if (!oFileInput) {
-                    oFileInput = document.createElement("input");
-                    oFileInput.type = "file";
-                    oFileInput.accept = "image/jpeg,image/jpg,image/png,image/gif";
-                    oFileInput.style.display = "none";
-                    document.body.appendChild(oFileInput);
-                    
-                    oFileInput.addEventListener("change", function(event) {
-                        var oFile = event.target.files[0];
-                        var oFileNameText = byId("imageSelectedFileName");
-                        
-                        if (!oFile) {
-                            if (oFileNameText) {
-                                oFileNameText.setText("No file selected");
-                            }
-                            oSelectedFile = null;
-                            return;
-                        }
+            onFileChange: function (oEvent) {
+                var oFile = oEvent.getParameter("files")[0];
+                var oFileNameText = byId("imageSelectedFileName");
 
-                        var sFileType = oFile.type;
-                        var aAllowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
-
-                        if (aAllowedTypes.indexOf(sFileType) === -1) {
-                            MessageToast.show("Please select a valid image file (JPEG, PNG, GIF)");
-                            if (oFileNameText) {
-                                oFileNameText.setText("No file selected");
-                            }
-                            return;
-                        }
-
-                        var iMaxSize = 5 * 1024 * 1024;
-                        if (oFile.size > iMaxSize) {
-                            MessageToast.show("File size must be less than 5MB");
-                            if (oFileNameText) {
-                                oFileNameText.setText("No file selected");
-                            }
-                            return;
-                        }
-
-                        oSelectedFile = oFile;
-                        if (oFileNameText) {
-                            oFileNameText.setText(oFile.name + " (" + Math.round(oFile.size / 1024) + " KB)");
-                        }
-                    });
+                if (!oFile) {
+                    if (oFileNameText) {
+                        oFileNameText.setText("No file selected");
+                    }
+                    oSelectedFile = null;
+                    return;
                 }
-                
-                oFileInput.click();
+
+                var sFileType = oFile.type;
+                var aAllowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+
+                if (aAllowedTypes.indexOf(sFileType) === -1) {
+                    MessageToast.show("Please select a valid image file (JPEG, PNG, GIF)");
+                    if (oFileNameText) {
+                        oFileNameText.setText("No file selected");
+                    }
+                    return;
+                }
+
+                var iMaxSize = 5 * 1024 * 1024;
+                if (oFile.size > iMaxSize) {
+                    MessageToast.show("File size must be less than 5MB");
+                    if (oFileNameText) {
+                        oFileNameText.setText("No file selected");
+                    }
+                    return;
+                }
+
+                oSelectedFile = oFile;
+                if (oFileNameText) {
+                    oFileNameText.setText(oFile.name + " (" + Math.round(oFile.size / 1024) + " KB)");
+                }
             },
 
             onUploadPress: function () {
